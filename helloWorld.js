@@ -1,3 +1,5 @@
+
+
 function sayHello(){
 
     document.getElementById("div1").innerHTML = "yes"
@@ -22,9 +24,13 @@ function addElement(){
 
 }
 
-var deleteElement = function(){
-    document.getElementById("delete").remove();
+//var deleteElement = function(){
+    //document.getElementById("delete").remove();
 
     //getElementById("delete").parentNode.removeChild(document.getElementById("delete"))
 
-}
+//}
+
+
+
+deleteElement = function() {$('#delete').remove()};
