@@ -4,10 +4,35 @@
     <meta charset="UTF-8">
     <title>PendingTitle</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script defer src = table.js></script>
+   <!-- <script defer src = table.js></script> -->
 </head>
 <body>
 <h1 id="titleMain">Grand Slam Winners</h1>
+<form>
+    <label>Search box:</label>
+    <input type="text" id = "textInput"/>
+    <label>Gender:</label>
+    <select id="MaleFemale">
+        <option value="anyMF">Any</option>
+        <option value="men">Men's</option>
+        <option value="women">Women's</option>
+    </select>
+    <label>Player Position:</label>
+    <select id="playerposition">
+        <option value="either">Either</option>
+        <option value="winner">Winner</option>
+        <option value="runner">Runner-Up</option>
+    </select>
+    <label>Tournament:</label>
+    <select id = "tournament">
+        <option value = "anyT">Any</option>
+        <option value = "ao">Australian Open</option>
+        <option value = "fo">French Open</option>
+        <option value = "wi">Wimbledon</option>
+        <option value = "uo">U.S. Open</option>
+    </select>
+
+</form>
 <div id="tableSpace"></div>
 </body>
 
