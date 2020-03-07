@@ -92,7 +92,9 @@ $(function(){
             return true
         }
         else{
+            // if rank is either
             if (rankCond === 'either'){
+                // these should be refactored
                 if (nameCond === 'contains'){
                     return winner.includes(playerInput) || runner.includes(playerInput);
                 }
@@ -100,6 +102,7 @@ $(function(){
                     return (playerInput === winner || playerInput === runner);
                 }
             }
+            //if rank is winner
             else if (rankCond === 'winner'){
                 if (nameCond === 'contains'){
                     return winner.includes(playerInput);
@@ -108,6 +111,7 @@ $(function(){
                     return (playerInput === winner);
                 }
             }
+            //if rank is runner-up
             else if (rankCond === 'runner'){
                 if (nameCond === 'contains'){
                     return runner.includes(playerInput);
