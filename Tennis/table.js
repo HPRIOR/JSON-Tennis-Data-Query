@@ -9,25 +9,17 @@ function resetTable(){
 $(function(){
     //variable to store JSON data
     let fileSelect;
+
     $('#MaleFemale').on('change', function(){
         fileSelect = this.value;
     });
 
-
     function getFileSelectValue() {
         fileSelect = $('#MaleFemale').val();
-        console.log(fileSelect)
     }
 
-    function tableSkel(tableBody){
-        var tableHead = '<tr>' +
-            '<th>year<th/> ' +
-            '<th>tournament<th/>' +
-            '<th>winner<th/>' +
-            '<th>runner-up<th/>' +
-            '</tr>'
-        return '<table>' + tableHead + tableBody + '</table>'
-
+    function createTable(tableBody){
+        return '<table><thead><tr><td><b>Year</b></td><td><b>Tournament</b></td><td><b>Winner</b></td><td><b>Runner-up</b></td></tr></thead><tbody>' + tableBody + '</tbody></table>'
     }
 
     function tableCol(col1, col2, col3, col4){
@@ -46,8 +38,8 @@ $(function(){
             var tableBody = [];
             $.each(result["result"], function(index, string){
                 tableBody.push(tableCol(string['year'], string['tournament'], string['winner'], string['runner-up']))
-            })
-            var table = tableSkel(tableBody.join(""))
+            });
+            var table = createTable(tableBody.join(""));
             document.getElementById("tableSpace").innerHTML = table;
         });
     })
