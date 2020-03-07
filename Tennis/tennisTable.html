@@ -8,7 +8,7 @@
     <script defer src = eventHandler.js> </script>
 </head>
 <body>
-<h1 id="titleMain">Grand Slam Winners</h1>
+<h1 id="titleMain">Grand Slam Results</h1>
 <form>
     <fieldset>
         <legend>Query Options:</legend>
@@ -19,6 +19,14 @@
             <option value="none">None</option>
             <option value="contains">Contains</option>
             <option value="equalsname">Equals</option>
+        </select>
+        <br/>
+        <br/>
+        <label>Player Rank:</label>
+        <select id="rankcond">
+            <option value="either">Either</option>
+            <option value="winner">Winner</option>
+            <option value="runner">Runner-Up</option>
         </select>
         <br/>
         <br/>
@@ -38,14 +46,7 @@
         </select>
         <br/>
         <br/>
-        <label>Player Rank:</label>
-        <select id="rankcond">
-            <option value="either">Either</option>
-            <option value="winner">Winner</option>
-            <option value="runner">Runner-Up</option>
-        </select>
-        <br/>
-        <br/>
+
         <label>Tournament:</label>
         <select id = "tournycond">
             <option value = "anyT">Any</option>
