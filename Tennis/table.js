@@ -123,6 +123,8 @@ $(function(){
         }
     }
 
+// create two funcitons, one for single variable equality or contains check, and another for two
+
     function checkTourny(tourny){
         if (tournyCond === 'anyT'){
             return true;
