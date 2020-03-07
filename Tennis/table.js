@@ -123,7 +123,7 @@ $(function(){
         }
     }
 
-// create two funcitons, one for single variable equality or contains check, and another for two
+// create two funcitons, one for single variable equality or contains check, and another for two, or just for single and do it twice in the host func
 
     function checkTourny(tourny){
         if (tournyCond === 'anyT'){
