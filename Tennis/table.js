@@ -95,35 +95,27 @@ $(function(){
             // if rank is either
             if (rankCond === 'either'){
                 // these should be refactored
-                if (nameCond === 'contains'){
-                    return winner.includes(playerInput) || runner.includes(playerInput);
-                }
-                else if(nameCond === 'equalsname'){
-                    return (playerInput === winner || playerInput === runner);
-                }
+                return nameCheck(winner) || nameCheck(runner)
             }
             //if rank is winner
             else if (rankCond === 'winner'){
-                if (nameCond === 'contains'){
-                    return winner.includes(playerInput);
-                }
-                else if(nameCond === 'equalsname'){
-                    return (playerInput === winner);
-                }
+                return nameCheck(winner)
             }
             //if rank is runner-up
             else if (rankCond === 'runner'){
-                if (nameCond === 'contains'){
-                    return runner.includes(playerInput);
-                }
-                else if(nameCond === 'equalsname'){
-                    return (playerInput === runner);
-                }
+                return nameCheck(runner)
             }
         }
     }
 
-// create two funcitons, one for single variable equality or contains check, and another for two, or just for single and do it twice in the host func
+    function nameCheck(player){
+        if (nameCond === 'contains'){
+            return player.includes(playerInput);
+        }
+        else if (nameCond === 'equalsname'){
+            return playerInput === player;
+        }
+    }
 
     function checkTourny(tourny){
         if (tournyCond === 'anyT'){
