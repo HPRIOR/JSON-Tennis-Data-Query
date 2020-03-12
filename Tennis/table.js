@@ -1,5 +1,4 @@
 
-
 // JQuery shorthand for window.onLoad
 $(function(){
 
@@ -13,7 +12,7 @@ $(function(){
     let dateInput;
     let dateInputInt;
 
-    // variables to cache JQ selectors
+    // variables to cache jQ selectors used multiple times
     let $fileCondSelect = $('#MaleFemale');
     let $nameCondSelect = $('#namecond');
     let $dateCondSelect = $('#datecond');
@@ -23,23 +22,15 @@ $(function(){
     let $dateInput = $('#dateinput');
 
 
-    // change conditions when they are changed by user
-    $fileCondSelect.on('change', function(){
-        fileCond = this.value;
-    });
-    $nameCondSelect.on('change', function(){
-        nameCond = this.value;
-    });
-    $dateCondSelect.on('change', function(){
-        dateCond = this.value;
-    });
-    $rankCondSelect.on('change', function(){
-        rankCond = this.value;
-    });
-    $tournyCondSelect.on('change', function(){
-        tournyCond = this.value;
-    });
 
+    // events to change selector conditions when they are changed by user
+    $fileCondSelect.on('change', function(){fileCond = this.value;});
+    $nameCondSelect.on('change', function(){nameCond = this.value;});
+    $dateCondSelect.on('change', function(){dateCond = this.value;});
+    $rankCondSelect.on('change', function(){rankCond = this.value;});
+    $tournyCondSelect.on('change', function(){tournyCond = this.value;});
+
+    // variables which are used by the event functions
     function getValues() {
         fileCond = $fileCondSelect.val();
         nameCond = $nameCondSelect.val();
@@ -51,10 +42,6 @@ $(function(){
         // conversion here so only one is made for date search
         dateInputInt = parseInt(dateInput, 10) || 0;
 
-    }
-
-    function createTable(tableBody){
-        return '<table id="main-table"><thead><tr><td><b>Year</b></td><td><b>Tournament</b></td><td><b>Winner</b></td><td><b>Runner-up</b></td></tr></thead><tbody>' + tableBody + '</tbody></table>'
     }
 
     function tableCol(col1, col2, col3, col4){
@@ -88,16 +75,12 @@ $(function(){
             return true
         }
         else{
-            // if rank is either
             if (rankCond === 'either'){
-                // these should be refactored
                 return checkName(winner) || checkName(runner)
             }
-            //if rank is winner
             else if (rankCond === 'winner'){
                 return checkName(winner)
             }
-            //if rank is runner-up
             else if (rankCond === 'runner'){
                 return checkName(runner)
             }
@@ -120,7 +103,6 @@ $(function(){
         else{
             return tourny === tournyCond;
         }
-
     }
 
     let checkWhiteList = () => !playerInput.match(/[^a-zA-Z0-9\- ]/) && !dateInput.match(/[^a-zA-Z0-9\- ]/);
@@ -129,15 +111,29 @@ $(function(){
 
     let addTableRowTo = (tableBody, key) => tableBody.push(tableCol(key['year'], key['tournament'], key['winner'], key['runner-up']));
 
-    let resetTable = () => {if (document.getElementById("main-table") != null) document.getElementById('main-table').remove()};
+    function resetTable() {
+        var mainTable = $("#main-table");
+        var errorMessage = $('#errormessage');
+        if (mainTable != null) mainTable.remove();
+        if (errorMessage != null) errorMessage.remove();
+    }
 
-    let removeHTMLat = (id) => { if (document.getElementById(id) != null) document.getElementById(id).remove()};
+    function removeHTMLat(id){
+        id = $('#' + id);
+        if (id != null) $(id).remove()
+    }
 
-    let displayHTML = (message, id, container) => document.getElementById(container).innerHTML = "<h1 id = " + id + ">" + message + "</h1>";
+    let displayHTML = (message, id, container) => $('#' + container).html( "<h1 id = " + id + ">" + message + "</h1>");
+
+    let createTable = (tableBody) =>
+        '<table id="main-table"><thead><tr><td><b>Year</b></td><td><b>Tournament</b></td><td><b>Winner</b></td><td><b>Runner-up</b></td></tr></thead><tbody>' + tableBody + '</tbody></table>';
+
+    // events for clicking on submit and reset table
 
     $("#reset").on('click', resetTable);
 
     $('#submit').on('click', function(){
+        // get the current values as they may have been changed by the user
         getValues();
         //check for whitelisted characters - no symbols allowed
         if (checkWhiteList()) {
@@ -148,10 +144,9 @@ $(function(){
                         addTableRowTo(tableBody, key)
                     }
                 });
-
                 // checks to see if any results are found
                 if (tableBody.length !== 0){
-                    document.getElementById("tableSpace").innerHTML = createTable(tableBody.join(""));
+                    $("#tableSpace").html(createTable(tableBody.join("")));
                     removeHTMLat("errormessage")
                 }
                 else{
@@ -164,7 +159,6 @@ $(function(){
             resetTable();
             displayHTML("Please use only alphanumerical characters", "errormessage", "error")
         }
-
     })
 });
 
