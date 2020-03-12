@@ -1,12 +1,8 @@
 
-function resetTable(){
-    if (document.getElementById("main-table") != null){
-        document.getElementById('main-table').remove();
-    }
-}
 
 // JQuery shorthand for window.onLoad
 $(function(){
+
     //variables to store conditions in Selectors
     let fileCond;
     let nameCond;
@@ -27,7 +23,7 @@ $(function(){
     let $dateInput = $('#dateinput');
 
 
-    // change conditions when they change
+    // change conditions when they are changed by user
     $fileCondSelect.on('change', function(){
         fileCond = this.value;
     });
@@ -87,7 +83,7 @@ $(function(){
         }
     }
 
-    function checkNameRank(winner, runner){
+    function checkRank(winner, runner){
         if (playerInput === '' || nameCond ==='none'){
             return true
         }
@@ -95,20 +91,20 @@ $(function(){
             // if rank is either
             if (rankCond === 'either'){
                 // these should be refactored
-                return nameCheck(winner) || nameCheck(runner)
+                return checkName(winner) || checkName(runner)
             }
             //if rank is winner
             else if (rankCond === 'winner'){
-                return nameCheck(winner)
+                return checkName(winner)
             }
             //if rank is runner-up
             else if (rankCond === 'runner'){
-                return nameCheck(runner)
+                return checkName(runner)
             }
         }
     }
 
-    function nameCheck(player){
+    function checkName(player){
         if (nameCond === 'contains'){
             return player.includes(playerInput);
         }
@@ -127,19 +123,48 @@ $(function(){
 
     }
 
+    let checkWhiteList = () => !playerInput.match(/[^a-zA-Z0-9\- ]/) && !dateInput.match(/[^a-zA-Z0-9\- ]/);
 
+    let rowCheck = (key) => checkRank(key['winner'], key['runner-up']) && checkDates(key['year']) && checkTourny(key['tournament']);
+
+    let addTableRowTo = (tableBody, key) => tableBody.push(tableCol(key['year'], key['tournament'], key['winner'], key['runner-up']));
+
+    let resetTable = () => {if (document.getElementById("main-table") != null) document.getElementById('main-table').remove()};
+
+    let removeHTMLat = (id) => { if (document.getElementById(id) != null) document.getElementById(id).remove()};
+
+    let displayHTML = (message, id, container) => document.getElementById(container).innerHTML = "<h1 id = " + id + ">" + message + "</h1>";
+
+    $("#reset").on('click', resetTable);
 
     $('#submit').on('click', function(){
         getValues();
-        $.getJSON( fileCond + '-grand-slam-winners.json',function(result){
-            let tableBody = [];
-            $.each(result["result"], function(index, key){
-                if (checkNameRank(key['winner'], key['runner-up']) && checkDates(key['year']) && checkTourny(key['tournament'])){
-                    tableBody.push(tableCol(key['year'], key['tournament'], key['winner'], key['runner-up']))
+        //check for whitelisted characters - no symbols allowed
+        if (checkWhiteList()) {
+            $.getJSON( fileCond + '-grand-slam-winners.json',function(result){
+                let tableBody = [];
+                $.each(result["result"], function(index, key){
+                    if (rowCheck(key)){
+                        addTableRowTo(tableBody, key)
+                    }
+                });
+
+                // checks to see if any results are found
+                if (tableBody.length !== 0){
+                    document.getElementById("tableSpace").innerHTML = createTable(tableBody.join(""));
+                    removeHTMLat("errormessage")
+                }
+                else{
+                    resetTable();
+                    displayHTML("No matching results", "errormessage", "error")
                 }
             });
-            document.getElementById("tableSpace").innerHTML = createTable(tableBody.join(""));
-        });
+        }
+        else{
+            resetTable();
+            displayHTML("Please use only alphanumerical characters", "errormessage", "error")
+        }
+
     })
 });
 
