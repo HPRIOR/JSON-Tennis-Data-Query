@@ -172,7 +172,7 @@ $(function(){
                     $("#tableSpace").html(createTable(tableBody.join("")));
                     removeHTMLat("errormessage")
                 }
-                // if not results found, reset the table and display error
+                // if no results found, reset the table and display error
                 else{
                     resetTable();
                     displayHTML("No matching results", "errormessage", "error")
