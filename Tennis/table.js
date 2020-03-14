@@ -26,16 +26,14 @@ $(function(){
     let $playerInput = $('#playerinput');
     let $dateInput = $('#dateinput');
 
-
-
     /*
      events to change selector conditions when they are changed by user
      */
-    $fileCondSelect.on('change', function(){fileCond = this.value;});
-    $nameCondSelect.on('change', function(){nameCond = this.value;});
-    $dateCondSelect.on('change', function(){dateCond = this.value;});
-    $rankCondSelect.on('change', function(){rankCond = this.value;});
-    $tournyCondSelect.on('change', function(){tournyCond = this.value;});
+    $fileCondSelect.on('change',() => fileCond = this.value);
+    $nameCondSelect.on('change', () => nameCond = this.value);
+    $dateCondSelect.on('change', () => dateCond = this.value);
+    $rankCondSelect.on('change',() => rankCond = this.value);
+    $tournyCondSelect.on('change',() => tournyCond = this.value);
 
     /*
      variables which are used by the event functions
@@ -50,7 +48,6 @@ $(function(){
         dateInput = $dateInput.val();
         // conversion here so only one is made for date search
         dateInputInt = parseInt(dateInput, 10) || 0;
-
     }
 
     /*
@@ -131,7 +128,7 @@ $(function(){
     let checkWhiteList = () => !playerInput.match(/[^a-zA-Z0-9\- ]/) && !dateInput.match(/[^a-zA-Z0-9\- ]/);
 
     // for each row this function returns true if all columns match search criteria
-    let rowCheck = (key) => checkRank(key['winner'], key['runner-up']) && checkDates(key['year']) && checkTourny(key['tournament']);
+    let rowIsAccepted = (key) => checkRank(key['winner'], key['runner-up']) && checkDates(key['year']) && checkTourny(key['tournament']);
 
     // adds rows to table given as argument, each column selected from key-value array
     let addTableRowTo = (tableBody, key) => tableBody.push(tableCol(key['year'], key['tournament'], key['winner'], key['runner-up']));
@@ -153,29 +150,29 @@ $(function(){
     let createTable = (tableBody) =>
         '<table id="main-table"><thead><tr><td><b>Year</b></td><td><b>Tournament</b></td><td><b>Winner</b></td><td><b>Runner-up</b></td></tr></thead><tbody>' + tableBody + '</tbody></table>';
 
-
     /*
      events for clicking submit and reset
      */
     $("#reset").on('click', resetTable);
 
-    $('#submit').on('click', function(){
+    $('#submit').on('click', () => {
         // gets the current values as they may have been changed by the user
         getValues();
         //check for whitelisted characters - no symbols allowed
         if (checkWhiteList()) {
-            $.getJSON( fileCond + '-grand-slam-winners.json',function(result){
+            $.getJSON( fileCond + '-grand-slam-winners.json',(result) => {
                 // array of strings to build table html
                 let tableBody = [];
                 // loops through JSON list, selects items that match query and appends them to list
-                $.each(result["result"], function(index, key){
-                    if (rowCheck(key)) addTableRowTo(tableBody, key)
+                $.each(result["result"], (index, key) => {
+                    if (rowIsAccepted(key)) addTableRowTo(tableBody, key)
                 });
                 // checks to see if any results were found and creates HTML table if they were
                 if (tableBody.length !== 0){
                     $("#tableSpace").html(createTable(tableBody.join("")));
                     removeHTMLat("errormessage")
                 }
+                // if not results found, reset the table and display error
                 else{
                     resetTable();
                     displayHTML("No matching results", "errormessage", "error")
