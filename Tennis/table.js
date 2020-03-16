@@ -76,7 +76,7 @@ $(function(){
         }
         let gender = "From the " + $fileCondSelect.val() + " game, ";
         let withName= "select " + tournament + date +" where " + player + "was " + rank;
-        let anyName = "select any player from " + tournament + date;
+        let anyName = "select all winners and runners-up from " + tournament + date;
         let text = [];
         text.push(gender);
         if (playerInput === '' || nameCond ==='none'){
