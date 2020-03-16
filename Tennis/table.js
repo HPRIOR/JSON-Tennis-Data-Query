@@ -25,6 +25,7 @@ $(function(){
     let $tournyCondSelect = $('#tournycond');
     let $playerInput = $('#playerinput');
     let $dateInput = $('#dateinput');
+    let $rankCondandTitle = $('#rankcond, #ranklabel')
     let $selectAll = $('#MaleFemale , #namecond, #datecond, #rankcond, #tournycond, #playerinput, #dateinput');
 
     /*
@@ -53,6 +54,9 @@ $(function(){
         dateInputInt = parseInt(dateInput, 10) || 0;
     }
 
+    /*
+    builds query string based on selected options to aid the user
+     */
     function queryBuilder(){
         getValues();
         let tournament;
@@ -93,18 +97,29 @@ $(function(){
         $('#currentquery').html(text.join(""))
     }
 
+    /*
+    execute query to begin with, and execute when queries are changed
+     */
     queryBuilder();
     $selectAll.on('change', queryBuilder);
 
+    /*
+    makes Player Rank grey when no name is selected to indicate its redundancy in this situation
+     */
     function greyOut(){
         playerInput === '' || nameCond ==='none' ?
-            $rankCondSelect.addClass("grey") :
-            $rankCondSelect.removeClass("grey")
+            $rankCondandTitle.addClass("grey") :
+            $rankCondandTitle.removeClass("grey")
+
+        dateInputInt === 0 ?
+            $dateCondSelect.addClass("grey") :
+            $dateCondSelect.removeClass("grey")
     }
 
     greyOut();
     $nameCondSelect.on('change', greyOut);
     $playerInput.on('change', greyOut);
+    $dateInput.on('change', greyOut);
 
     /*
     returns a column of a html row, where the parameters match the individual columns
