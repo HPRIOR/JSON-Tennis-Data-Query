@@ -126,10 +126,10 @@ $(function(){
                 return date === dateInputInt;
             }
             else if (dateCond === 'greaterthan'){
-                return date >= dateInputInt;
+                return date > dateInputInt;
             }
             else if (dateCond === 'lessthan'){
-                return date <= dateInputInt;
+                return date < dateInputInt;
             }
         }
     }
