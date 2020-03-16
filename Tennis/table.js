@@ -1,7 +1,4 @@
-
-/*
-JQuery shorthand for window.onLoad
- */
+/* JQuery shorthand for window.onLoad */
 $(function(){
     /*
     variables to store conditions in Selectors
@@ -15,9 +12,7 @@ $(function(){
     let dateInput;
     let dateInputInt;
 
-    /*
-     variables to cache jQ selectors used multiple times
-     */
+    /* variables to cache jQ selectors used multiple times */
     let $fileCondSelect = $('#MaleFemale');
     let $nameCondSelect = $('#namecond');
     let $dateCondSelect = $('#datecond');
@@ -28,9 +23,7 @@ $(function(){
     let $rankCondandTitle = $('#rankcond, #ranklabel')
     let $selectAll = $('#MaleFemale , #namecond, #datecond, #rankcond, #tournycond, #playerinput, #dateinput');
 
-    /*
-     events to change selectors when they are changed by user
-     */
+    /* events to change selectors when they are changed by user */
     $fileCondSelect.on('change',() => fileCond = this.value);
     $nameCondSelect.on('change', () => nameCond = this.value);
     $dateCondSelect.on('change', () => dateCond = this.value);
@@ -39,9 +32,7 @@ $(function(){
     $dateInput.on('change',() => dateInput = this.value);
     $playerInput.on('change',() => playerInput = this.value);
 
-    /*
-     variables which are used by the event functions
-     */
+    /* variables which are used by the event functions */
     function getValues() {
         fileCond = $fileCondSelect.val();
         nameCond = $nameCondSelect.val();
@@ -54,9 +45,7 @@ $(function(){
         dateInputInt = parseInt(dateInput, 10) || 0;
     }
 
-    /*
-    builds query string based on selected options to aid the user
-     */
+    /* builds query string based on selected options to aid the user */
     function queryBuilder(){
         getValues();
         let tournament;
@@ -97,15 +86,11 @@ $(function(){
         $('#currentquery').html(text.join(""))
     }
 
-    /*
-    execute query to begin with, and execute when queries are changed
-     */
+    /* execute query to begin with, and execute when queries are changed */
     queryBuilder();
     $selectAll.on('change', queryBuilder);
 
-    /*
-    makes Player Rank grey when no name is selected to indicate its redundancy in this situation
-     */
+    /* makes Player Rank grey when no name is selected to indicate its redundancy in this situation */
     function greyOut(){
         playerInput === '' || nameCond ==='none' ?
             $rankCondandTitle.addClass("grey") :
@@ -121,9 +106,7 @@ $(function(){
     $playerInput.on('change', greyOut);
     $dateInput.on('change', greyOut);
 
-    /*
-    returns a column of a html row, where the parameters match the individual columns
-     */
+    /* returns a column of a html row, where the parameters match the individual columns */
     function tableCol(col1, col2, col3, col4){
         return '<tr>' +
             '<td>' +col1+ '</td>' +
@@ -133,9 +116,7 @@ $(function(){
             '<tr/>'
     }
 
-    /*
-    compares date given by user to date passed as an argument
-     */
+    /* compares date given by user to date passed as an argument */
     function checkDates(date){
         if (dateInputInt === 0){
             return true;
@@ -153,9 +134,7 @@ $(function(){
         }
     }
 
-    /*
-    Returns true or false depending on rank selection
-     */
+    /* Returns true or false depending on rank selection */
     function checkRank(winner, runner){
         if (playerInput === '' || nameCond ==='none'){
             return true
@@ -221,9 +200,7 @@ $(function(){
     let createTable = (tableBody) =>
         '<table id="main-table"><thead><tr><td><b>Year</b></td><td><b>Tournament</b></td><td><b>Winner</b></td><td><b>Runner-up</b></td></tr></thead><tbody>' + tableBody + '</tbody></table>';
 
-    /*
-     events for clicking submit and reset
-     */
+    /* events for clicking submit and reset */
     $("#reset").on('click', resetTable);
 
 
