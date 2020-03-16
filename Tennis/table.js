@@ -25,15 +25,18 @@ $(function(){
     let $tournyCondSelect = $('#tournycond');
     let $playerInput = $('#playerinput');
     let $dateInput = $('#dateinput');
+    let $selectAll = $('#MaleFemale , #namecond, #datecond, #rankcond, #tournycond, #playerinput, #dateinput');
 
     /*
-     events to change selector conditions when they are changed by user
+     events to change selectors when they are changed by user
      */
     $fileCondSelect.on('change',() => fileCond = this.value);
     $nameCondSelect.on('change', () => nameCond = this.value);
     $dateCondSelect.on('change', () => dateCond = this.value);
     $rankCondSelect.on('change',() => rankCond = this.value);
     $tournyCondSelect.on('change',() => tournyCond = this.value);
+    $dateInput.on('change',() => dateInput = this.value);
+    $playerInput.on('change',() => playerInput = this.value);
 
     /*
      variables which are used by the event functions
@@ -49,6 +52,59 @@ $(function(){
         // conversion here so only one is made for date search
         dateInputInt = parseInt(dateInput, 10) || 0;
     }
+
+    function queryBuilder(){
+        getValues();
+        let tournament;
+        if (tournyCond === 'anyT') tournament = " any tournament ";
+        else tournament = tournyCond + " tournament(s) ";
+
+        let player;
+        if (nameCond === 'contains') player = "a player whose name contains " + playerInput + " ";
+        else if(nameCond === 'equalsname') player = playerInput + " ";
+
+        let rank;
+        if (rankCond === 'either') rank = "either the winner or runner-up ";
+        else if (rankCond === 'winner') rank = "the winner ";
+        else if (rankCond === 'runner') rank = "the runner-up ";
+
+        let date;
+        if (dateInputInt === 0) date = '';
+        else{
+            if (dateCond === 'equalsdate'){
+                date = "in the year " + dateInput;
+            }
+            else if(dateCond === 'greaterthan'){
+                date = "after the year " + dateInput;
+            }
+            else if (dateCond === 'lessthan'){
+                date = "before the year " + dateInput;
+            }
+        }
+        let gender = "From the " + $fileCondSelect.val() + " game, ";
+        let withName= "select " + tournament + " where " + player + "was " + rank + date;
+        let anyName = "select any player from " + tournament + date;
+        let text = [];
+        text.push(gender);
+        if (playerInput === '' || nameCond ==='none'){
+            text.push(anyName);
+        }
+        else text.push(withName);
+        $('#currentquery').html(text.join(""))
+    }
+
+    queryBuilder();
+    $selectAll.on('change', queryBuilder);
+
+    function greyOut(){
+        playerInput === '' || nameCond ==='none' ?
+            $rankCondSelect.addClass("grey") :
+            $rankCondSelect.removeClass("grey")
+    }
+
+    greyOut();
+    $nameCondSelect.on('change', greyOut);
+    $playerInput.on('change', greyOut);
 
     /*
     returns a column of a html row, where the parameters match the individual columns
@@ -154,6 +210,7 @@ $(function(){
      events for clicking submit and reset
      */
     $("#reset").on('click', resetTable);
+
 
     $('#submit').on('click', () => {
         // gets the current values as they may have been changed by the user

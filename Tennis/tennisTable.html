@@ -1,36 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
+<style>
+    #main-table {
+        border-collapse: collapse;
+        width: 100%;
+        text-align: center;
+    }
+    #main-table td, #main-table th {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+    #main-table tr:hover {background-color: #ddd;}
+    .grey{
+        color: grey;
+    }
+
+</style>
 <head>
     <meta charset="UTF-8">
     <title>PendingTitle</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
 </head>
 <body>
 <h1 id="titleMain">Grand Slam Results</h1>
-<form>
-    <fieldset>
+<form id="form">
+    <fieldset id="fieldset">
         <legend>Query Options:</legend>
         <br/>
-        <label>Player Name:</label>
-        <input type="text" id = "playerinput"/>
+        <label id="playernametext" >Player Name:</label>
+        <input type="text" placeholder="e.g. Roger Federer" id = "playerinput"/>
         <select id="namecond">
-            <option value="none">None</option>
-            <option value="contains">Contains</option>
-            <option value="equalsname">Equals</option>
+            <option value="none" title="No conditions attached to name input">None</option>
+            <option value="contains" title="Searches for names which contain name input">Contains</option>
+            <option value="equalsname" title="Searches for names which equal name input">Equals</option>
         </select>
+        <span id="namehelp"></span>
         <br/>
         <br/>
         <label>Player Rank:</label>
         <select id="rankcond">
-            <option value="either">Either</option>
-            <option value="winner">Winner</option>
-            <option value="runner">Runner-Up</option>
+            <option value="either" title="Select either winners or runners up">Either</option>
+            <option value="winner" title="Select only the winners">Winner</option>
+            <option value="runner" title="Select only the runners-up">Runner-Up</option>
         </select>
         <br/>
         <br/>
         <label>Date:</label>
-        <input type="text" id = "dateinput"/>
+        <input type="text" placeholder="e.g. 2007" id = "dateinput"/>
         <select id="datecond">
             <option value="equalsdate">Equals</option>
             <option value="greaterthan">Greater Than</option>
@@ -40,27 +56,31 @@
         <br/>
         <label>Gender:</label>
         <select id="MaleFemale">
-            <option value="mens">Men's</option>
-            <option value="womens">Women's</option>
+            <option value="mens" id="m">Men's</option>
+            <option value="womens" id="w">Women's</option>
         </select>
         <br/>
         <br/>
-
         <label>Tournament:</label>
         <select id = "tournycond">
-            <option value = "anyT">Any</option>
-            <option value = "Australian Open">Australian Open</option>
-            <option value = "French Open">French Open</option>
-            <option value = "Wimbledon">Wimbledon</option>
-            <option value = "U.S. Open">U.S. Open</option>
+            <option value = "anyT" id="anyT">Any</option>
+            <option value = "Australian Open" id="ao">Australian Open</option>
+            <option value = "French Open" id="fo">French Open</option>
+            <option value = "Wimbledon" id="wi">Wimbledon</option>
+            <option value = "U.S. Open" id="uo">U.S. Open</option>
         </select>
         <br/>
         <br/>
         <input type = "button" id="submit" value="Submit">
-        <input type = "button" id="reset" value="Reset">
+        <input type = "button" id="reset" value="Reset Table">
         <br/>
+        <br/>
+        <div>Current Query: </div>
+        <br/>
+        <div id="currentquery"></div>
     </fieldset>
 </form>
+
 <div id="tableSpace"></div>
 <div id="error"></div>
 </body>
