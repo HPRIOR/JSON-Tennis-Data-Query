@@ -20,7 +20,7 @@ $(function(){
     let $tournyCondSelect = $('#tournycond');
     let $playerInput = $('#playerinput');
     let $dateInput = $('#dateinput');
-    let $rankCondandTitle = $('#rankcond, #ranklabel')
+    let $rankCondandTitle = $('#rankcond, #ranklabel');
     let $selectAll = $('#MaleFemale , #namecond, #datecond, #rankcond, #tournycond, #playerinput, #dateinput');
 
     /* events to change selectors when they are changed by user */
@@ -39,8 +39,8 @@ $(function(){
         dateCond = $dateCondSelect.val();
         rankCond = $rankCondSelect.val();
         tournyCond = $tournyCondSelect.val();
-        playerInput = $playerInput.val();
-        dateInput = $dateInput.val();
+        playerInput = $playerInput.val().trim();
+        dateInput = $dateInput.val().trim();
         // conversion here so only one is made for date search
         dateInputInt = parseInt(dateInput, 10) || 0;
     }
@@ -94,7 +94,7 @@ $(function(){
     function greyOut(){
         playerInput === '' || nameCond ==='none' ?
             $rankCondandTitle.addClass("grey") :
-            $rankCondandTitle.removeClass("grey")
+            $rankCondandTitle.removeClass("grey");
 
         dateInputInt === 0 ?
             $dateCondSelect.addClass("grey") :
@@ -184,8 +184,8 @@ $(function(){
     let addTableRowTo = (tableBody, key) => tableBody.push(tableCol(key['year'], key['tournament'], key['winner'], key['runner-up']));
 
     function resetTable() {
-        var mainTable = $("#main-table");
-        var errorMessage = $('#errormessage');
+        let mainTable = $("#main-table");
+        let errorMessage = $('#errormessage');
         if (mainTable != null) mainTable.remove();
         if (errorMessage != null) errorMessage.remove();
     }
@@ -203,20 +203,20 @@ $(function(){
     /* events for clicking submit and reset */
     $("#reset").on('click', resetTable);
 
-
+    /*
+     *  Loops through JSON list, selects items that match query and appends them to a list
+     *  which is then used to build HTML table
+     *  Checks for non alphanumerical characters to avoid hacking (obviously not securely)
+     *  Checks for no results found
+     */
     $('#submit').on('click', () => {
-        // gets the current values as they may have been changed by the user
-        getValues();
-        //check for whitelisted characters - no symbols allowed
+        getValues(); // as they may have been changed by user
         if (checkWhiteList()) {
             $.getJSON( fileCond + '-grand-slam-winners.json',(result) => {
-                // array of strings to build table html
                 let tableBody = [];
-                // loops through JSON list, selects items that match query and appends them to list
                 $.each(result["result"], (index, key) => {
                     if (rowIsAccepted(key)) addTableRowTo(tableBody, key)
                 });
-                // checks to see if any results were found and creates HTML table if they were
                 if (tableBody.length !== 0){
                     $("#tableSpace").html(createTable(tableBody.join("")));
                     removeHTMLat("errormessage")
@@ -228,7 +228,6 @@ $(function(){
                 }
             });
         }
-        // message to display if disallowed characters appear in input fields
         else{
             resetTable();
             displayHTML("Please use only alphanumerical characters", "errormessage", "error")
